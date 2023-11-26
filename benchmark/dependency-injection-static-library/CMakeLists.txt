@@ -1,0 +1,29 @@
+add_executable(
+  dependency-injection-static-library-benchmarks
+)
+target_sources(
+  dependency-injection-static-library-benchmarks
+  PRIVATE
+    "benchmark_main.cpp"
+    "performance-micro-benchmarks/static-library/oo/benchmark_user.cpp"
+)
+target_link_libraries(
+  dependency-injection-static-library-benchmarks
+  PRIVATE
+    dependency-injection-static-library
+    benchmark::benchmark
+)
+target_include_directories(
+  dependency-injection-static-library-benchmarks
+  PRIVATE
+    "${RESOURCES_INCLUDE}"
+)
+
+add_custom_target(
+  dependency-injection-static-library-benchmarks-assembly
+  ALL
+  DEPENDS
+    dependency-injection-static-library-benchmarks
+  COMMAND
+    objdump -CdlS -M intel "${CMAKE_BINARY_DIR}/benchmark/dependency-injection-static-library/dependency-injection-static-library-benchmarks" > "${CMAKE_BINARY_DIR}/benchmark/dependency-injection-static-library/dependency-injection-static-library-benchmarks.asm"
+)

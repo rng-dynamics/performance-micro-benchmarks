@@ -1,0 +1,19 @@
+add_library(
+  dependency-injection-header-only
+    INTERFACE
+)
+target_include_directories(
+  dependency-injection-header-only
+  INTERFACE
+    "."
+)
+target_compile_features(
+  dependency-injection-header-only
+  INTERFACE
+    cxx_std_20
+)
+target_compile_options(
+  dependency-injection-header-only
+  INTERFACE
+    "-g" "-O3" "-mavx2" "-Wall" "-Wextra" "-pedantic" "-Werror"
+)

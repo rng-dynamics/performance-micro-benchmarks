@@ -1,0 +1,31 @@
+add_executable(
+  dependency-injection-header-only-benchmarks
+)
+target_sources(
+  dependency-injection-header-only-benchmarks
+  PRIVATE
+    "benchmark_main.cpp"
+    "performance-micro-benchmarks/header-only/concepts/benchmark_user.cpp"
+    "performance-micro-benchmarks/header-only/crtp/benchmark_user.cpp"
+    "performance-micro-benchmarks/header-only/oo/benchmark_user.cpp"
+    "performance-micro-benchmarks/header-only/template-duck-typing/benchmark_user.cpp"
+)
+target_link_libraries(
+  dependency-injection-header-only-benchmarks
+  PRIVATE
+    dependency-injection-header-only
+    benchmark::benchmark
+)
+target_include_directories(
+  dependency-injection-header-only-benchmarks
+  PRIVATE
+    "${RESOURCES_INCLUDE}"
+)
+
+add_custom_target(dependency-injection-header-only-benchmarks-assembly
+  ALL
+  DEPENDS
+    dependency-injection-header-only-benchmarks
+  COMMAND
+    objdump -CdlS -M intel "${CMAKE_BINARY_DIR}/benchmark/dependency-injection-header-only/dependency-injection-header-only-benchmarks" > "${CMAKE_BINARY_DIR}/benchmark/dependency-injection-header-only/dependency-injection-header-only-benchmarks.asm"
+)

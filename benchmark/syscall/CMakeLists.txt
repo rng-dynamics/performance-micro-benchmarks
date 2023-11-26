@@ -1,0 +1,26 @@
+add_executable(
+  syscall-benchmarks
+)
+target_sources(
+  syscall-benchmarks
+  PRIVATE
+    "performance-micro-benchmarks/syscall/benchmark_syscall.cpp"
+)
+target_link_libraries(
+  syscall-benchmarks
+  PRIVATE
+    benchmark::benchmark
+)
+target_include_directories(
+  syscall-benchmarks
+  PRIVATE
+    ${RESOURCES_INCLUDE}
+)
+add_custom_target(
+  syscall-benchmarks-assembly
+  ALL
+  DEPENDS
+    syscall-benchmarks
+  COMMAND
+    objdump -CdlS -M intel "${CMAKE_BINARY_DIR}/benchmark/syscall/syscall-benchmarks" > "${CMAKE_BINARY_DIR}/benchmark/syscall/syscall-benchmarks.asm"
+)

@@ -1,0 +1,6 @@
+set(RESOURCES_INCLUDE "${CMAKE_CURRENT_LIST_DIR}/resources/include/") 
+add_subdirectory("dependency-injection-header-only/")
+add_subdirectory("dependency-injection-shared-library/")
+add_subdirectory("dependency-injection-static-library/")
+add_subdirectory("syscall/")
+add_subdirectory("memory-access/")

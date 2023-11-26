@@ -1,0 +1,18 @@
+add_executable(
+  memory-access-benchmarks
+)
+target_sources(
+  memory-access-benchmarks
+  PRIVATE
+    "performance-micro-benchmarks/memory-access/benchmark_memory_access.cpp"
+)
+target_link_libraries(
+  memory-access-benchmarks
+  PRIVATE
+    benchmark::benchmark
+)
+target_include_directories(
+  memory-access-benchmarks
+  PRIVATE
+    ${RESOURCES_INCLUDE}
+)

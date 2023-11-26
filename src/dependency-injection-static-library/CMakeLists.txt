@@ -1,0 +1,19 @@
+add_library(
+  dependency-injection-static-library
+  STATIC
+)
+target_sources(
+  dependency-injection-static-library
+  PRIVATE
+    "src/performance-micro-benchmarks/static-library/oo/user.cpp"
+)
+target_include_directories(
+  dependency-injection-static-library
+  PUBLIC
+    "include/"
+)
+target_compile_options(
+  dependency-injection-static-library
+  PUBLIC
+    "-g" "-O3" "-mavx2" "-Wall" "-Wextra" "-pedantic" "-Werror"
+)

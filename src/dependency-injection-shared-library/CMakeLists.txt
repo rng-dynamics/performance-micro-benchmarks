@@ -1,0 +1,19 @@
+add_library(
+  dependency-injection-shared-library
+  SHARED
+)
+target_sources(
+  dependency-injection-shared-library
+  PRIVATE
+    "src/performance-micro-benchmarks/shared-library/oo/user.cpp"
+)
+target_include_directories(
+  dependency-injection-shared-library
+  PUBLIC
+    "include/"
+)
+target_compile_options(
+  dependency-injection-shared-library
+  PUBLIC
+    "-g" "-O3" "-mavx2" "-Wall" "-Wextra" "-pedantic" "-Werror"
+)
