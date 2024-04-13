@@ -3,7 +3,7 @@
 #include <performance-micro-benchmarks/header-only/oo/fn_interface.hpp>
 #include <performance-micro-benchmarks/header-only/oo/user.hpp>
 
-#include "utility.hpp"
+#include "performance-micro-benchmarks/utility.hpp"
 
 namespace performance_micro_benchmarks::header_only::oo {
 
@@ -24,6 +24,10 @@ class BenchmarkPerformanceBenchmarksHeaderOnlyOoUser
 
 BENCHMARK_DEFINE_F(BenchmarkPerformanceBenchmarksHeaderOnlyOoUser, CallFn)
 (::benchmark::State &state) {
+  if (auto success = set_thread_affinity_to_core(0); !success) {
+    abort();
+  }
+
   auto user = User{std::make_unique<FnInterfaceImpl>()};
   for (auto _ : state) {
     REPEAT32(::benchmark::DoNotOptimize(user.fn());)

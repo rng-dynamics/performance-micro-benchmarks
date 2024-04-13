@@ -6,11 +6,15 @@
 
 #include <benchmark/benchmark.h>
 
-#include "utility.hpp"
+#include "performance-micro-benchmarks/utility.hpp"
 
 namespace performance_micro_benchmarks::memory_access {
 
 void simple_memory_access(benchmark::State &state) {
+  if (auto success = set_thread_affinity_to_core(0); !success) {
+    abort();
+  }
+
   auto pd = std::make_unique<int>();
   volatile int *p1 = pd.get();
   for (auto _ : state) {
@@ -21,6 +25,10 @@ void simple_memory_access(benchmark::State &state) {
 
 template <typename Word> void cache_sequential_read(benchmark::State &state) {
   const int64_t size = state.range(0);
+
+  if (auto success = set_thread_affinity_to_core(0); !success) {
+    abort();
+  }
 
   void *memory = nullptr;
   // posix_memalign allocates memory.
@@ -57,6 +65,10 @@ template <typename Word> void cache_sequential_read(benchmark::State &state) {
 template <typename Word> void cache_sequential_write(benchmark::State &state) {
   const int64_t size = state.range(0);
 
+  if (auto success = set_thread_affinity_to_core(0); !success) {
+    abort();
+  }
+
   void *memory = nullptr;
   // posix_memalign allocates memory.
   if (::posix_memalign(&memory, 64, size) != 0) {
@@ -92,6 +104,10 @@ template <typename Word> void cache_sequential_write(benchmark::State &state) {
 
 template <typename Word> void cache_random_read(benchmark::State &state) {
   const int64_t size = state.range(0);
+
+  if (auto success = set_thread_affinity_to_core(0); !success) {
+    abort();
+  }
 
   void *memory = nullptr;
   // posix_memalign allocates memory.
@@ -137,6 +153,10 @@ template <typename Word> void cache_random_read(benchmark::State &state) {
 
 template <typename Word> void cache_random_write(benchmark::State &state) {
   const int64_t size = state.range(0);
+
+  if (auto success = set_thread_affinity_to_core(0); !success) {
+    abort();
+  }
 
   void *memory = nullptr;
   // posix_memalign allocates memory.
@@ -186,6 +206,11 @@ template <typename Word> void cache_random_write(benchmark::State &state) {
 template <typename Word>
 void cache_sequential_read__experimental(benchmark::State &state) {
   const int64_t size = state.range(0);
+
+  if (auto success = set_thread_affinity_to_core(0); !success) {
+    abort();
+  }
+
   void *memory = nullptr;
   { // check preconditions
     if (::posix_memalign(&memory, 64, size) != 0) {
