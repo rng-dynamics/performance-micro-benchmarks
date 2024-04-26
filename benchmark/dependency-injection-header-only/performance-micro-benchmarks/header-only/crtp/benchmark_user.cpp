@@ -2,7 +2,7 @@
 
 #include <performance-micro-benchmarks/header-only/crtp/user.hpp>
 
-#include "utility.hpp"
+#include "performance-micro-benchmarks/utility.hpp"
 
 namespace performance_micro_benchmarks::header_only::crtp {
 
@@ -23,6 +23,10 @@ class BenchmarkPerformanceBenchmarksHeaderOnlyCrtpUser
 
 BENCHMARK_DEFINE_F(BenchmarkPerformanceBenchmarksHeaderOnlyCrtpUser, CallFn)
 (::benchmark::State &state) {
+  if (auto success = set_thread_affinity_to_core(0); !success) {
+    abort();
+  }
+
   auto user = User{FnInterfaceImpl()};
   for (auto _ : state) {
     REPEAT32(::benchmark::DoNotOptimize(user.fn());)
