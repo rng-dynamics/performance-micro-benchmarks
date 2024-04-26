@@ -3,7 +3,7 @@
 
 #include <benchmark/benchmark.h>
 
-#include "performance-micro-benchmarks/utility.hpp"
+#include <performance-micro-benchmarks/support-library/utility.hpp>
 
 namespace performance_micro_benchmarks::syscall {
 
@@ -11,7 +11,8 @@ class BenchmarkPerformanceBenchmarksSyscall : public ::benchmark::Fixture {};
 
 BENCHMARK_DEFINE_F(BenchmarkPerformanceBenchmarksSyscall, CallGetPid)
 (::benchmark::State &state) {
-  if (auto success = set_thread_affinity_to_core(0); !success) {
+  if (auto success = support_library::utility::SetThreadAffinityToCore(0);
+      !success) {
     abort();
   }
 

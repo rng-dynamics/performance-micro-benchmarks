@@ -11,12 +11,13 @@ target_link_libraries(
   dependency-injection-static-library-benchmarks
   PRIVATE
     dependency-injection-static-library
+    support-library
     benchmark::benchmark
 )
 target_include_directories(
   dependency-injection-static-library-benchmarks
   PRIVATE
-    "${RESOURCES_INCLUDE}"
+    support-library
 )
 
 add_custom_target(

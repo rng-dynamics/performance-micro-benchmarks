@@ -3,7 +3,7 @@
 #include <performance-micro-benchmarks/shared-library/oo/fn_interface.hpp>
 #include <performance-micro-benchmarks/shared-library/oo/user.hpp>
 
-#include "performance-micro-benchmarks/utility.hpp"
+#include <performance-micro-benchmarks/support-library/utility.hpp>
 
 namespace performance_micro_benchmarks::shared_library::oo {
 
@@ -24,7 +24,8 @@ class BenchmarkPerformanceBenchmarksSharedLibraryOoUser
 
 BENCHMARK_DEFINE_F(BenchmarkPerformanceBenchmarksSharedLibraryOoUser, CallFn)
 (::benchmark::State &state) {
-  if (auto success = set_thread_affinity_to_core(0); !success) {
+  if (auto success = support_library::utility::SetThreadAffinityToCore(0);
+      !success) {
     abort();
   }
 

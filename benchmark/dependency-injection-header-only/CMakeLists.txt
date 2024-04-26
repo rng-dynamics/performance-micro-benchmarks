@@ -14,12 +14,12 @@ target_link_libraries(
   dependency-injection-header-only-benchmarks
   PRIVATE
     dependency-injection-header-only
+    support-library
     benchmark::benchmark
 )
 target_include_directories(
   dependency-injection-header-only-benchmarks
   PRIVATE
-    "${RESOURCES_INCLUDE}"
 )
 
 add_custom_target(dependency-injection-header-only-benchmarks-assembly
