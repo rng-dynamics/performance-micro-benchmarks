@@ -9,12 +9,13 @@ target_sources(
 target_link_libraries(
   syscall-benchmarks
   PRIVATE
+    support-library
     benchmark::benchmark
 )
 target_include_directories(
   syscall-benchmarks
   PRIVATE
-    ${RESOURCES_INCLUDE}
+    support-library
 )
 add_custom_target(
   syscall-benchmarks-assembly

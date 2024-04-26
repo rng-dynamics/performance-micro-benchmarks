@@ -1,0 +1,19 @@
+add_library(
+  support-library
+  INTERFACE
+)
+target_include_directories(
+  support-library
+  INTERFACE
+  "."
+)
+target_compile_features(
+  support-library
+  INTERFACE
+    cxx_std_20
+)
+target_compile_options(
+  support-library
+  INTERFACE
+    "-g" "-O3" "-mavx2" "-Wall" "-Wextra" "-pedantic" # "-Werror" "-Wno-error=ignored-attributes"
+)
