@@ -59,10 +59,15 @@ template <typename Word> void cache_sequential_read(benchmark::State &state) {
     }
   }
 
+  Word ww = {};
   for (auto _ : state) {
     benchmark::ClobberMemory();
-    for (volatile Word *ptr = p0; ptr != p1;) {
-      REPEAT32(benchmark::DoNotOptimize(*ptr); ++ptr;)
+    for (Word *ptr = p0; ptr != p1;) {
+      REPEAT32(                         //
+          ww = *ptr;                    //
+          benchmark::DoNotOptimize(ww); //
+          ++ptr;                        //
+      )
     }
   }
 
@@ -185,7 +190,6 @@ template <typename Word> void cache_random_read(benchmark::State &state) {
 
 } // namespace performance_micro_benchmarks::memory_access
 
-// NOLINTNEXTLINE
 BENCHMARK(performance_micro_benchmarks::memory_access::simple_memory_access);
 
 // BENCHMARK_TEMPLATE does not work with names containing a namespace.
@@ -203,45 +207,36 @@ BENCHMARK_TEMPLATE1(cache_sequential_read, unsigned long)
     ->RangeMultiplier(2)
     ->Range(1U << 10U, 1U << 30U);
 
-// NOLINTNEXTLINE
 BENCHMARK_TEMPLATE1(cache_sequential_read, __m128i)
     ->RangeMultiplier(2)
     ->Range(1U << 10U, 1U << 30U);
 
-// NOLINTNEXTLINE
 BENCHMARK_TEMPLATE1(cache_sequential_read, __m256i)
     ->RangeMultiplier(2)
     ->Range(1U << 10U, 1U << 30U);
 
-// NOLINTNEXTLINE
 BENCHMARK_TEMPLATE1(cache_sequential_write, unsigned long)
     ->RangeMultiplier(2)
     ->Range(1U << 10U, 1U << 30U);
 
-// NOLINTNEXTLINE
 BENCHMARK_TEMPLATE1(cache_sequential_write, __m128i)
     ->RangeMultiplier(2)
     ->Range(1U << 10U, 1U << 30U);
 
-// NOLINTNEXTLINE
 BENCHMARK_TEMPLATE1(cache_sequential_write, __m256i)
     ->RangeMultiplier(2)
     ->Range(1U << 10U, 1U << 30U);
 
-// NOLINTNEXTLINE
 BENCHMARK_TEMPLATE1(cache_random_read, unsigned long)
     ->RangeMultiplier(2)
     ->Range(1U << 10U, 1U << 30U);
 
-// NOLINTNEXTLINE
 BENCHMARK_TEMPLATE1(cache_random_read, __m128i)
     ->RangeMultiplier(2)
     ->Range(1U << 10U, 1U << 30U);
 
-// NOLINTNEXTLINE
 BENCHMARK_TEMPLATE1(cache_random_read, __m256i)
     ->RangeMultiplier(2)
     ->Range(1U << 10U, 1U << 30U);
 
-// NOLINTNEXTLINE
 BENCHMARK_MAIN();
