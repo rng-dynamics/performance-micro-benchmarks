@@ -1,11 +1,23 @@
 Perfomance Micro Benchmarks
-===========================
+===
 
 A collection of performance micro benchmarks in C++.
 
 
+Content
+---
+
+- [Benchmarks for cache and memory speed](benchmark/memory-access/performance-micro-benchmarks/memory-access/benchmark_memory_access.cpp).
+- [Benchmarks for system calls](benchmark/syscall/performance-micro-benchmarks/syscall/benchmark_syscall.cpp).
+- A number of benchmarks for evaluating different methods for dependency injection: 
+  [benchmark for dependency injection using C++ concepts](benchmark/dependency-injection-header-only/performance-micro-benchmarks/header-only/concepts/benchmark_user.cpp),
+  [benchmark for dependency injection using CRTP](benchmark/dependency-injection-header-only/performance-micro-benchmarks/header-only/crtp/benchmark_user.cpp),
+  [benchmark for dependency injection using pure virtual interface class](benchmark/dependency-injection-header-only/performance-micro-benchmarks/header-only/oo/benchmark_user.cpp),
+  [benchmark for dependency injection using template duck typing](benchmark/dependency-injection-header-only/performance-micro-benchmarks/header-only/template-duck-typing/benchmark_user.cpp).
+
+
 Build
------
+---
 
 ```
 $ mkdir build && cd build
@@ -23,36 +35,37 @@ test/unit/dependency-injection-header-only/dependency-injection-header-only-unit
 ```
 
 
-Content
--------
+Measuring cache and memory speed
+---
 
-- [Benchmarks for system calls](benchmark/syscall/performance-micro-benchmarks/syscall/benchmark_syscall.cpp).
-- [Benchmarks for memory and cache access time](benchmark/memory-access/performance-micro-benchmarks/memory-access/benchmark_memory_access.cpp).
-- Benchmark for dependency injection using C++ concepts:
-  - [dependency injection using C++ concepts source files](src/dependency-injection-header-only/performance-micro-benchmarks/header-only/concepts/),
-  - [dependency injection using C++ concepts benchmark](benchmark/dependency-injection-header-only/performance-micro-benchmarks/header-only/concepts/benchmark_user.cpp),
-  - [dependency injection using C++ concepts unit tests](test/unit/dependency-injection-header-only/performance-micro-benchmarks/header-only/concepts/).
-- Benchmark for dependency injection using the Curiously Recurring Template Pattern (CRTP):
-  - [dependency injection using CRTP source files](src/dependency-injection-header-only/performance-micro-benchmarks/header-only/crtp/),
-  - [dependency injection using CRTP benchmark](benchmark/dependency-injection-header-only/performance-micro-benchmarks/header-only/crtp/benchmark_user.cpp),
-  - [dependency injection using CRTP unit tests](test/unit/dependency-injection-header-only/performance-micro-benchmarks/header-only/crtp/).
-- Benchmark for dependency injection using pure virtual interface classes:
-  - [dependency injection using pure virtual interface class source files](src/dependency-injection-header-only/performance-micro-benchmarks/header-only/oo/),
-  - [dependency injection using pure virtual interface class benchmark](benchmark/dependency-injection-header-only/performance-micro-benchmarks/header-only/oo/benchmark_user.cpp),
-  - [dependency injection using pure virtual interface class unit tests](test/unit/dependency-injection-header-only/performance-micro-benchmarks/header-only/oo/).
-- Benchmark for dependency injection using template duck typing:
-  - [dependency injection using template duck typing source files](src/dependency-injection-header-only/performance-micro-benchmarks/header-only/template-duck-typing/),
-  - [dependency injection using template duck typing benchmark](benchmark/dependency-injection-header-only/performance-micro-benchmarks/header-only/template-duck-typing/benchmark_user.cpp),
-  - [dependency injection using template duck typing unit tests](test/unit/dependency-injection-header-only/performance-micro-benchmarks/header-only/template-duck-typing/).
-- Benchmark for dependency injection into a static library:
-  - [static library source files](src/dependency-injection-static-library/include/performance-micro-benchmarks/static-library/oo/),
-  - [static library benchmark](benchmark/dependency-injection-static-library/performance-micro-benchmarks/static-library/oo/benchmark_user.cpp).
-- Benchmark for dependency injection into a shared library:
-  - [shared library source files](src/dependency-injection-shared-library/include/performance-micro-benchmarks/shared-library/oo/),
-  - [shared library benchmark](benchmark/dependency-injection-shared-library/performance-micro-benchmarks/shared-library/oo/benchmark_user.cpp).
+Figures 1 to 6 show measurements of memory access times on three different CPUs. Figures 1 and 2 are obtained from an Intel Xeon E5-2620 v2 CPU. Figures 3 and 4 are obtained from an AMD Ryzen 7 PRO 4750U CPU. Figures 5 and 6 are obtained from an Intel Core i5-8259U CPU. The source code for the benchmark can be found in [benchmark_memory_access.cpp](benchmark/memory-access/performance-micro-benchmarks/memory-access/benchmark_memory_access.cpp).
+
+| ![](resources/cache-random-read-xeon-8-items-per-second.png) |
+|:--:|
+| *Figure 1: Cache and memory random read in words per second on an Intel Xeon E5-2620 v2 with 32KiB L1 cache, 256 KiB L2 cache, and 15360KiB L3 cache.* |
+
+| ![](resources/cache-random-read-xeon-8-bytes-per-second.png) |
+|:--:|
+| *Figure 2: Cache and memory random read in bytes per second on an Intel Xeon E5-2620 v2 with 32KiB L1 cache, 256 KiB L2 cache, and 15360KiB L3 cache.* |
+
+| ![](resources/memory-access-benchmark-amd-1-items-per-second.png) |
+|:--:|
+| *Figure 3: Cache and memory random read in words per second on an AMD Ryzen 7 PRO 4750U with 32KiB L1 cache, 256 KiB L2 cache, and 4096KiB L3 cache.* |
+
+| ![](resources/memory-access-benchmark-amd-1-bytes-per-second.png) |
+|:--:|
+| *Figure 4: Cache and memory random read in bytes per second on an AMD Ryzen 7 PRO 4750U with 32KiB L1 cache, 256 KiB L2 cache, and 4096KiB L3 cache.* |
+
+| ![](resources/memory-access-benchmark-apple-3-items-per-second.png) |
+|:--:|
+| *Figure 5: Cache and memory random read in words per second on an Intel Core i5-8259U with 32KiB L1 cache, 256 KiB L2 cache, and 6144KiB L3 cache.* |
+
+| ![](resources/memory-access-benchmark-apple-3-bytes-per-second.png) |
+|:--:|
+| *Figure 6: Cache and memory random read in bytes per second on an Intel Core i5-8259U with 32KiB L1 cache, 256 KiB L2 cache, and 6144KiB L3 cache.* |
 
 
 License
 -------
 
-This project is licensed under the BSD-3-Clause license - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the BSD-3-Clause license - see the [LICENSE.md](LICENSE.md) file for details.
