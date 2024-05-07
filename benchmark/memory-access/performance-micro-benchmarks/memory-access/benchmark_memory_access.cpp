@@ -188,6 +188,68 @@ template <typename Word> void cache_random_read(benchmark::State &state) {
   state.SetItemsProcessed((p1 - p0) * state.iterations());
 }
 
+template <typename Word> void cache_random_read_2(benchmark::State &state) {
+  const int64_t size = state.range(0);
+
+  if (auto success = support_library::utility::SetThreadAffinityToCore(0);
+      !success) {
+    abort();
+  }
+
+  void *memory = nullptr;
+  // posix_memalign allocates memory.
+  if (::posix_memalign(&memory, alignment, size) != 0) {
+    abort();
+  }
+  Word *const p0 = static_cast<Word *>(memory);
+  void *const end = static_cast<char *>(memory) + size;
+  Word *p1 = static_cast<Word *>(end);
+  const int64_t NN = size / sizeof(Word);
+  { // check correctness
+    if (size % 256 != 0) {
+      abort();
+    }
+    if (size % sizeof(Word) != 0) {
+      abort();
+    }
+    if ((p1 - p0) != NN) {
+      abort();
+    }
+    if (NN % 32 != 0) {
+      abort();
+    }
+  }
+  auto v_index = std::vector<int>{};
+  v_index.reserve(NN);
+  for (int ii = 0; ii < NN; ++ii) {
+    v_index.push_back(ii);
+  }
+  auto rd = std::random_device{};
+  auto minstd_rand = std::minstd_rand{rd()};
+  std::shuffle(v_index.begin(), v_index.end(), minstd_rand);
+
+  int start_aidx = v_index.front();
+
+  support_library::utility::FillDataArray(p0, NN, v_index);
+
+  Word next_idx = *(p0 + start_aidx);
+  int idx_as_int = 0;
+
+  for (auto _ : state) {
+    benchmark::ClobberMemory();
+    for (int lidx = 0; lidx < NN;) {
+      REPEAT32(                                      //
+          idx_as_int = READ_INT_FROM_WORD(next_idx); //
+          next_idx = *(((volatile Word *)p0) + idx_as_int);             //
+          ++lidx;)
+    }
+  }
+
+  ::free(memory);
+  state.SetBytesProcessed(size * state.iterations());
+  state.SetItemsProcessed((p1 - p0) * state.iterations());
+}
+
 } // namespace performance_micro_benchmarks::memory_access
 
 BENCHMARK(performance_micro_benchmarks::memory_access::simple_memory_access);
